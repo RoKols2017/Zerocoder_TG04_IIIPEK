@@ -1,4 +1,24 @@
 from aiogram.types import KeyboardButton, ReplyKeyboardMarkup, InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.utils.keyboard import InlineKeyboardBuilder, ReplyKeyboardBuilder
+
+async def build_keyboard(params,is_inline=True,url=False):
+    if is_inline:
+        print(params)
+        builder = InlineKeyboardBuilder()
+        for param in params:
+            if url:
+                builder.add(InlineKeyboardButton(text=param, url=params[param]))
+            else:
+                builder.add(InlineKeyboardButton(text=params[param], callback_data=param))
+        return builder.adjust(2).as_markup()
+    else:
+        builder = ReplyKeyboardBuilder()
+        for param in params:
+            builder.add(KeyboardButton(text=param))
+        return builder.adjust(2).as_markup(resize_keyboard=True,
+                                           one_time_keyboard=True,
+                                           input_field_placeholder="Выберите действие..."
+                                           )
 
 reply_kbd = ReplyKeyboardMarkup(
     keyboard=[
@@ -41,3 +61,18 @@ inline_kbd = InlineKeyboardMarkup(
         ],
     ]
 )
+
+
+start_kbd = ["Привет", "Пока",]
+
+url_kbd = {"Video":"https://rutube.ru/video/efbddc56a5b2d403bfb0bec1327ebe0f/",
+           "Music":"https://freemusicarchive.org/music/musinova/single/in-the-club-techno-housemp3/",
+           "News":"https://dzen.ru/news",
+           }
+
+more_kbd = {"show_more":"Больше",
+            }
+
+options_kbd = {"opt_1":"Опция 1",
+               "opt_2":"Опция 2",
+              }
